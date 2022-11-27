@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d3a825ca-706b-479a-a67a-c587e8858f17" name="Changes" comment="" />
+    <list default="true" id="d3a825ca-706b-479a-a67a-c587e8858f17" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SRC Source/SensorData.py" beforeDir="false" afterPath="$PROJECT_DIR$/SRC Source/SensorData.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,6 +46,7 @@
       <updated>1669583598350</updated>
       <workItem from="1669583599676" duration="754000" />
       <workItem from="1669585190611" duration="75000" />
+      <workItem from="1669585556036" duration="502000" />
     </task>
     <task id="LOCAL-00001" summary="updates">
       <created>1669583977916</created>
