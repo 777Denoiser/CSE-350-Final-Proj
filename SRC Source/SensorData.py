@@ -10,7 +10,6 @@ Add Movement Intensity to all sd structures
 """
 
 
-
 class metaData:
     def __init__(self, DateTimeUTC, TimezoneM, App, AppVersion, OS, OSVersion, GTCS):
         self.dateTimeUTC = DateTimeUTC
@@ -55,7 +54,7 @@ class graphData:
             case 'Temp':
                 for obj in self.SDarr:
                     d.append({'DateTime': self.parseDateTime(obj.date, obj.time),
-                              'TimeZ' : obj.timeZ,
+                              'TimeZ': obj.timeZ,
                               'Temp': obj.temp
                               })
                     iter += 1
@@ -63,7 +62,7 @@ class graphData:
             case 'ACCMagnitude':
                 for obj in self.SDarr:
                     d.append({'DateTime': self.parseDateTime(obj.date, obj.time),
-                              'TimeZ' : obj.timeZ,
+                              'TimeZ': obj.timeZ,
                               'Temp': obj.ACCMag
                               })
                     iter += 1
@@ -71,7 +70,7 @@ class graphData:
             case 'EDA':
                 for obj in self.SDarr:
                     d.append({'DateTime': self.parseDateTime(obj.date, obj.time),
-                              'TimeZ' : obj.timeZ,
+                              'TimeZ': obj.timeZ,
                               'Temp': obj.EDA
                               })
                     iter += 1
@@ -79,7 +78,7 @@ class graphData:
             case 'OnWrist':
                 for obj in self.SDarr:
                     d.append({'DateTime': self.parseDateTime(obj.date, obj.time),
-                              'TimeZ' : obj.timeZ,
+                              'TimeZ': obj.timeZ,
                               'Temp': obj.onWrist
                               })
                     iter += 1
@@ -87,7 +86,7 @@ class graphData:
             case 'MovInten':
                 for obj in self.SDarr:
                     d.append({'DateTime': self.parseDateTime(obj.date, obj.time),
-                              'TimeZ' : obj.timeZ,
+                              'TimeZ': obj.timeZ,
                               'Temp': obj.movInten
                               })
                     iter += 1
@@ -95,7 +94,7 @@ class graphData:
             case 'StepCount':
                 for obj in self.SDarr:
                     d.append({'DateTime': self.parseDateTime(obj.date, obj.time),
-                              'TimeZ' : obj.timeZ,
+                              'TimeZ': obj.timeZ,
                               'Temp': obj.stepCt
                               })
                     iter += 1
@@ -103,17 +102,17 @@ class graphData:
             case 'Rest':
                 for obj in self.SDarr:
                     d.append({'DateTime': self.parseDateTime(obj.date, obj.time),
-                              'TimeZ' : obj.timeZ,
+                              'TimeZ': obj.timeZ,
                               'Temp': obj.rest
                               })
                     iter += 1
                 self.dfRest = pd.DataFrame(d)
 
-    def parseDateTime(self,date,time):
-        time = time.replace('Z','')
-        y,m,d = [int(x) for x in date.split('-')]
-        h,mi,s = [int(x) for x in time.split(':')]
-        dati = datetime(y,m,d,h,mi,s)
+    def parseDateTime(self, date, time):
+        time = time.replace('Z', '')
+        y, m, d = [int(x) for x in date.split('-')]
+        h, mi, s = [int(x) for x in time.split(':')]
+        dati = datetime(y, m, d, h, mi, s)
         return dati
 
     def compileGraph(self):
@@ -244,22 +243,23 @@ class sensorData:
     def recursiveSearch(self, dateS, timeS, index=0):
         if index >= self.SDSize:
             return False
-        y,m,d = [int(x) for x in dateS.split('-')]
-        h,mi,s = [int(x) for x in timeS.split(':')]
-        dtS = datetime(y,m,d,h,mi,s)
+        y, m, d = [int(x) for x in dateS.split('-')]
+        h, mi, s = [int(x) for x in timeS.split(':')]
+        dtS = datetime(y, m, d, h, mi, s)
 
-        if self.parseDateTime(self.SDarr[index].date,self.SDarr[index].time) == dtS and self.parseDateTime(self.SDarr[index].date,self.SDarr[index].time) >= dtS:
-            if self.parseDateTime(self.SDarr[index-1].date,self.SDarr[index-1].time) < dtS or self.parseDateTime(self.SDarr[index].date,self.SDarr[index].time) == dtS:
+        if self.parseDateTime(self.SDarr[index].date, self.SDarr[index].time) == dtS and self.parseDateTime(self.SDarr[index].date, self.SDarr[index].time) >= dtS:
+            if self.parseDateTime(self.SDarr[index-1].date, self.SDarr[index-1].time) < dtS or self.parseDateTime(self.SDarr[index].date, self.SDarr[index].time) == dtS:
                 return index
             else:
                 return self.recursiveSearch(dateS, timeS, index-1)
         else:
             return self.recursiveSearch(dateS, timeS, index+1)
-    def parseDateTime(self,date,time):
-        time = time.replace('Z','')
-        y,m,d = [int(x) for x in date.split('-')]
-        h,mi,s = [int(x) for x in time.split(':')]
-        dati = datetime(y,m,d,h,mi,s)
+
+    def parseDateTime(self, date, time):
+        time = time.replace('Z', '')
+        y, m, d = [int(x) for x in date.split('-')]
+        h, mi, s = [int(x) for x in time.split(':')]
+        dati = datetime(y, m, d, h, mi, s)
         return dati
 
     def compileSensor(self):
@@ -267,9 +267,10 @@ class sensorData:
         df = df.reset_index()
         ct = 0
         for index, row in df.iterrows():
-            date, time = row['Datetime(utc)'].split('T', 1)
+            datetime = row['Datetime(utc)']
+            dateC, timeC = datetime.split('T', 1)
             onWrist = self.bool2int(row['On Wrist'])
-            sp = sensorPoint(date, time, row['Timezone (minutes)'], row['Temp avg'],
+            sp = sensorPoint(dateC, timeC, row['Timezone (minutes)'], row['Temp avg'],
                              row['Acc magnitude avg'], row['Eda avg'], onWrist, row['Movement Intensity'], row['Steps count'], row['Rest'])
             self.SDarr.append(sp)
             ct += 1
@@ -312,13 +313,13 @@ class sensorData:
         stepCtAvrg = 0
         restAvrg = 0
 
-        y,m,d = [int(x) for x in DateE.split('-')]
-        h,mi,s = [int(x) for x in TimeE.split(':')]
-        dtE = datetime(y,m,d,h,mi,s)
+        y, m, d = [int(x) for x in DateE.split('-')]
+        h, mi, s = [int(x) for x in TimeE.split(':')]
+        dtE = datetime(y, m, d, h, mi, s)
 
         indexS = self.recursiveSearch(DateS, TimeS)
         index = indexS
-        while self.parseDateTime(self.SDarr[index].date,self.SDarr[index].time) <= dtE:
+        while self.parseDateTime(self.SDarr[index].date, self.SDarr[index].time) <= dtE:
             tempAvrg += self.SDarr[index].temp
             ACCMagAvrg += self.SDarr[index].ACCMag
             EDAAvrg += self.SDarr[index].EDA
@@ -343,6 +344,6 @@ if __name__ == '__main__':
     sd = sensorData('DummyData.csv', 'DummyData.csv')
     sd.compileSensor()
     print(sd.summarize('OnWrist'))
-    print(sd.aggregate('2019-09-20','2019-09-20','11:49:00', '11:52:00'))
+    print(sd.aggregate('2019-09-20', '2019-09-20', '11:49:00', '11:52:00'))
     gd = sd.compileGraphData()
     print(gd.dfTemp)
